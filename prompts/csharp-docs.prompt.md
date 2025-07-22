@@ -1,7 +1,7 @@
 ---
-mode: "agent"
-tools: ["changes", "codebase", "editFiles", "problems"]
-description: "Ensure that C# types are documented with XML comments and follow best practices for documentation."
+mode: 'agent'
+tools: ['changes', 'codebase', 'editFiles', 'problems']
+description: 'Ensure that C# types are documented with XML comments and follow best practices for documentation.'
 ---
 
 # C# Documentation Best Practices
@@ -21,3 +21,4 @@ description: "Ensure that C# types are documented with XML comments and follow b
 - Use `<typeparamref>` to reference type parameters in documentation.
 - Use `<c>` for inline code snippets.
 - Use `<code>` for code blocks.
+- Use `<see langword>` for language specific keywords like `null`, `true`, `false`, `int`, `bool`, etc.
