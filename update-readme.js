@@ -5,76 +5,50 @@ const path = require("path");
 
 // Template sections for the README
 const TEMPLATES = {
-  header: `# 🤖 Awesome GitHub Copilot Customizations
-
-Enhance your GitHub Copilot experience with community-contributed instructions, prompts, and configurations. Get consistent AI assistance that follows your team's coding standards and project requirements.
-
-## 🎯 GitHub Copilot Customization Features
-
-GitHub Copilot provides three main ways to customize AI responses and tailor assistance to your specific workflows, team guidelines, and project requirements:
-
-| **📋 [Custom Instructions](#-custom-instructions)** | **🎯 [Reusable Prompts](#-reusable-prompts)** | **🧩 [Custom Chat Modes](#-custom-chat-modes)** |
-| --- | --- | --- |
-| Define common guidelines for tasks like code generation, reviews, and commit messages. Describe *how* tasks should be performed<br><br>**Benefits:**<br>• Automatic inclusion in every chat request<br>• Repository-wide consistency<br>• Multiple implementation options | Create reusable, standalone prompts for specific tasks. Describe *what* should be done with optional task-specific guidelines<br><br>**Benefits:**<br>• Eliminate repetitive prompt writing<br>• Shareable across teams<br>• Support for variables and dependencies | Define chat behavior, available tools, and codebase interaction patterns within specific boundaries for each request<br><br>**Benefits:**<br>• Context-aware assistance<br>• Tool configuration<br>• Role-specific workflows |
-
-> **💡 Pro Tip:** Custom instructions only affect Copilot Chat (not inline code completions). You can combine all three customization types - use custom instructions for general guidelines, prompt files for specific tasks, and chat modes to control the interaction context.
-
-
-## 📝 Contributing
-
-We welcome contributions! Please see our [Contributing Guide](./CONTRIBUTING.md) for details on how to submit new instructions and prompts.`,
-
   instructionsSection: `## 📋 Custom Instructions
 
-Team and project-specific instructions to enhance GitHub Copilot's behavior for specific technologies and coding practices:`,
+Team and project-specific instructions to enhance GitHub Copilot's behavior for specific technologies and coding practices.`,
 
-  instructionsUsage: `> 💡 **Usage**: Copy these instructions to your \`.github/copilot-instructions.md\` file or create task-specific \`.github/.instructions.md\` files in your workspace's \`.github/instructions\` folder.`,
+  instructionsUsage: `### How to Use Custom Instructions
+
+**To Install:**
+- Click the **VS Code** or **VS Code Insiders** install button for the instruction you want to use
+- Download the \`*.instructions.md\` file and manually add it to your project's instruction collection
+
+**To Use/Apply:**
+- Copy these instructions to your \`.github/copilot-instructions.md\` file in your workspace
+- Create task-specific \`.github/.instructions.md\` files in your workspace's \`.github/instructions\` folder
+- Instructions automatically apply to Copilot behavior once installed in your workspace`,
 
   promptsSection: `## 🎯 Reusable Prompts
 
 Ready-to-use prompt templates for specific development scenarios and tasks, defining prompt text with a specific mode, model, and available set of tools.`,
 
-  promptsUsage: `> 💡 **Usage**: Use \`/prompt-name\` in VS Code chat, run \`Chat: Run Prompt\` command, or hit the run button while you have a prompt open.`,
+  promptsUsage: `### How to Use Reusable Prompts
 
-  chatmodesSection: `## 🧩 Custom Chat Modes
+**To Install:**
+- Click the **VS Code** or **VS Code Insiders** install button for the prompt you want to use
+- Download the \`*.prompt.md\` file and manually add it to your prompt collection
+
+**To Run/Execute:**
+- Use \`/prompt-name\` in VS Code chat after installation
+- Run the \`Chat: Run Prompt\` command from the Command Palette
+- Hit the run button while you have a prompt file open in VS Code`,
+
+  chatmodesSection: `## 💭 Custom Chat Modes
 
 Custom chat modes define specific behaviors and tools for GitHub Copilot Chat, enabling enhanced context-aware assistance for particular tasks or workflows.`,
 
-  chatmodesUsage: `> 💡 **Usage**: Create new chat modes using the command \`Chat: Configure Chat Modes...\`, then switch your chat mode in the Chat input from _Agent_ or _Ask_ to your own mode.`,
+  chatmodesUsage: `### How to Use Custom Chat Modes
 
-  footer: `## 📚 Additional Resources
+**To Install:**
+- Click the **VS Code** or **VS Code Insiders** install button for the chat mode you want to use
+- Download the \`*.chatmode.md\` file and manually install it in VS Code using the Command Palette
 
-- [VS Code Copilot Customization Documentation](https://code.visualstudio.com/docs/copilot/copilot-customization) - Official Microsoft documentation
-- [GitHub Copilot Chat Documentation](https://code.visualstudio.com/docs/copilot/chat/copilot-chat) - Complete chat feature guide
-- [Custom Chat Modes](https://code.visualstudio.com/docs/copilot/chat/chat-modes) - Advanced chat configuration
-- [VS Code Settings](https://code.visualstudio.com/docs/getstarted/settings) - General VS Code configuration guide
-
-## 🛠️ Development Configuration
-
-This repository uses various configuration files to ensure consistent code style and avoid issues with line endings:
-
-- [\`.editorconfig\`](.editorconfig) - Defines coding styles across different editors and IDEs
-- [\`.gitattributes\`](.gitattributes) - Ensures consistent line endings in text files
-- [\`.vscode/settings.json\`](.vscode/settings.json) - VS Code-specific settings for this repository
-- [\`.vscode/extensions.json\`](.vscode/extensions.json) - Recommended VS Code extensions
-
-> 💡 **Note**: All markdown files in this repository use LF line endings (Unix-style) to avoid mixed line endings issues. The repository is configured to automatically handle line endings conversion.
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🤝 Code of Conduct
-
-Please note that this project is released with a [Contributor Code of Conduct](CODE_OF_CONDUCT.md). By participating in this project you agree to abide by its terms.
-
-## ™️ Trademarks
-
-This project may contain trademarks or logos for projects, products, or services. Authorized use of Microsoft
-trademarks or logos is subject to and must follow
-[Microsoft's Trademark & Brand Guidelines](https://www.microsoft.com/en-us/legal/intellectualproperty/trademarks/usage/general).
-Use of Microsoft trademarks or logos in modified versions of this project must not cause confusion or imply Microsoft sponsorship.
-Any use of third-party trademarks or logos are subject to those third-party's policies.`,
+**To Activate/Use:**
+- Import the chat mode configuration into your VS Code settings
+- Access the installed chat modes through the VS Code Chat interface
+- Select the desired chat mode from the available options in VS Code Chat`,
 };
 
 // Add error handling utility
@@ -227,13 +201,13 @@ function extractDescription(filePath) {
           } else {
             // Look for single-line description field in frontmatter
             const descriptionMatch = line.match(
-              /^description:\s*['"]?(.+?)['"]?$/
+              /^description:\s*['"]?(.+?)['"]?\s*$/
             );
             if (descriptionMatch) {
               let description = descriptionMatch[1];
 
               // Check if the description is wrapped in single quotes and handle escaped quotes
-              const singleQuoteMatch = line.match(/^description:\s*'(.+)'$/);
+              const singleQuoteMatch = line.match(/^description:\s*'(.+?)'\s*$/);
               if (singleQuoteMatch) {
                 // Replace escaped single quotes ('') with single quotes (')
                 description = singleQuoteMatch[1].replace(/''/g, "'");
@@ -268,20 +242,34 @@ const vscodeInsidersInstallImage =
   "https://img.shields.io/badge/VS_Code_Insiders-Install-24bfa5?style=flat-square&logo=visualstudiocode&logoColor=white";
 const repoBaseUrl =
   "https://raw.githubusercontent.com/github/awesome-copilot/main";
-const vscodeBaseUrl = "https://vscode.dev/redirect?url=";
-const vscodeInsidersBaseUrl = "https://insiders.vscode.dev/redirect?url=";
+
+// Map install types to aka.ms short links. Both VS Code and Insiders will use
+// the same aka.ms target; the redirect base (vscode vs insiders) is preserved
+// so VS Code or Insiders opens correctly but the installation URL is uniform.
+const AKA_INSTALL_URLS = {
+  instructions: "https://aka.ms/awesome-copilot/install/instructions",
+  prompt: "https://aka.ms/awesome-copilot/install/prompt",
+  mode: "https://aka.ms/awesome-copilot/install/chatmode",
+};
+
 function makeBadges(link, type) {
-  return `[![Install in VS Code](${vscodeInstallImage})](${vscodeBaseUrl}${encodeURIComponent(
-    `vscode:chat-${type}/install?url=${repoBaseUrl}/${link})`
-  )} [![Install in VS Code](${vscodeInsidersInstallImage})](${vscodeInsidersBaseUrl}${encodeURIComponent(
-    `vscode-insiders:chat-${type}/install?url=${repoBaseUrl}/${link})`
-  )}`;
+  const aka = AKA_INSTALL_URLS[type] || AKA_INSTALL_URLS.instructions;
+
+  const vscodeUrl = `${aka}?url=${encodeURIComponent(`vscode:chat-${type}/install?url=${repoBaseUrl}/${link}`)}`;
+  const insidersUrl = `${aka}?url=${encodeURIComponent(`vscode-insiders:chat-${type}/install?url=${repoBaseUrl}/${link}`)}`;
+
+  return `[![Install in VS Code](${vscodeInstallImage})](${vscodeUrl})<br />[![Install in VS Code Insiders](${vscodeInsidersInstallImage})](${insidersUrl})`;
 }
 
 /**
  * Generate the instructions section with a table of all instructions
  */
 function generateInstructionsSection(instructionsDir) {
+  // Check if directory exists
+  if (!fs.existsSync(instructionsDir)) {
+    return "";
+  }
+
   // Get all instruction files
   const instructionFiles = fs
     .readdirSync(instructionsDir)
@@ -290,9 +278,14 @@ function generateInstructionsSection(instructionsDir) {
 
   console.log(`Found ${instructionFiles.length} instruction files`);
 
+  // Return empty string if no files found
+  if (instructionFiles.length === 0) {
+    return "";
+  }
+
   // Create table header
   let instructionsContent =
-    "| Title | Description | Install |\n| ----- | ----------- | ------- |\n";
+    "| Title | Description |\n| ----- | ----------- |\n";
 
   // Generate table rows for each instruction file
   for (const file of instructionFiles) {
@@ -308,21 +301,26 @@ function generateInstructionsSection(instructionsDir) {
 
     if (customDescription && customDescription !== "null") {
       // Use the description from frontmatter
-      instructionsContent += `| [${title}](${link}) | ${customDescription} | ${badges} |\n`;
+      instructionsContent += `| [${title}](${link})<br />${badges} | ${customDescription} |\n`;
     } else {
       // Fallback to the default approach - use last word of title for description, removing trailing 's' if present
       const topic = title.split(" ").pop().replace(/s$/, "");
-      instructionsContent += `| [${title}](${link}) | ${topic} specific coding standards and best practices | ${badges} |\n`;
+      instructionsContent += `| [${title}](${link})<br />${badges} | ${topic} specific coding standards and best practices |\n`;
     }
   }
 
-  return `${TEMPLATES.instructionsSection}\n\n${instructionsContent}\n${TEMPLATES.instructionsUsage}`;
+  return `${TEMPLATES.instructionsSection}\n${TEMPLATES.instructionsUsage}\n\n${instructionsContent}`;
 }
 
 /**
  * Generate the prompts section with a table of all prompts
  */
 function generatePromptsSection(promptsDir) {
+  // Check if directory exists
+  if (!fs.existsSync(promptsDir)) {
+    return "";
+  }
+
   // Get all prompt files
   const promptFiles = fs
     .readdirSync(promptsDir)
@@ -331,9 +329,14 @@ function generatePromptsSection(promptsDir) {
 
   console.log(`Found ${promptFiles.length} prompt files`);
 
+  // Return empty string if no files found
+  if (promptFiles.length === 0) {
+    return "";
+  }
+
   // Create table header
   let promptsContent =
-    "| Title | Description | Install |\n| ----- | ----------- | ------- |\n";
+    "| Title | Description |\n| ----- | ----------- |\n";
 
   // Generate table rows for each prompt file
   for (const file of promptFiles) {
@@ -348,13 +351,13 @@ function generatePromptsSection(promptsDir) {
     const badges = makeBadges(link, "prompt");
 
     if (customDescription && customDescription !== "null") {
-      promptsContent += `| [${title}](${link}) | ${customDescription} | ${badges} |\n`;
+      promptsContent += `| [${title}](${link})<br />${badges} | ${customDescription} |\n`;
     } else {
-      promptsContent += `| [${title}](${link}) | | ${badges} |\n`;
+      promptsContent += `| [${title}](${link})<br />${badges} | | |\n`;
     }
   }
 
-  return `${TEMPLATES.promptsSection}\n\n${promptsContent}\n${TEMPLATES.promptsUsage}`;
+  return `${TEMPLATES.promptsSection}\n${TEMPLATES.promptsUsage}\n\n${promptsContent}`;
 }
 
 /**
@@ -382,7 +385,7 @@ function generateChatModesSection(chatmodesDir) {
 
   // Create table header
   let chatmodesContent =
-    "| Title | Description | Install |\n| ----- | ----------- | ------- |\n";
+    "| Title | Description |\n| ----- | ----------- |\n";
 
   // Generate table rows for each chat mode file
   for (const file of chatmodeFiles) {
@@ -394,69 +397,80 @@ function generateChatModesSection(chatmodesDir) {
     const customDescription = extractDescription(filePath);
 
     // Create badges for installation links
-    const badges = makeBadges(link, "chatmode");
+    const badges = makeBadges(link, "mode");
 
     if (customDescription && customDescription !== "null") {
-      chatmodesContent += `| [${title}](${link}) | ${customDescription} | ${badges} |\n`;
+      chatmodesContent += `| [${title}](${link})<br />${badges} | ${customDescription} |\n`;
     } else {
-      chatmodesContent += `| [${title}](${link}) | | ${badges} |\n`;
+      chatmodesContent += `| [${title}](${link})<br />${badges} | | |\n`;
     }
   }
 
-  return `${TEMPLATES.chatmodesSection}\n\n${chatmodesContent}\n${TEMPLATES.chatmodesUsage}`;
+  return `${TEMPLATES.chatmodesSection}\n${TEMPLATES.chatmodesUsage}\n\n${chatmodesContent}`;
 }
 
-/**
- * Generate the complete README.md content from scratch
- */
-function generateReadme() {
-  const instructionsDir = path.join(__dirname, "instructions");
-  const promptsDir = path.join(__dirname, "prompts");
-  const chatmodesDir = path.join(__dirname, "chatmodes");
-
-  // Generate each section
-  const instructionsSection = generateInstructionsSection(instructionsDir);
-  const promptsSection = generatePromptsSection(promptsDir);
-  const chatmodesSection = generateChatModesSection(chatmodesDir);
-
-  // Build the complete README content with template sections
-  let readmeContent = [TEMPLATES.header, instructionsSection, promptsSection];
-
-  // Only include chat modes section if we have any chat modes
-  if (chatmodesSection) {
-    readmeContent.push(chatmodesSection);
+// Utility: write file only if content changed
+function writeFileIfChanged(filePath, content) {
+  const exists = fs.existsSync(filePath);
+  if (exists) {
+    const original = fs.readFileSync(filePath, "utf8");
+    if (original === content) {
+      console.log(`${path.basename(filePath)} is already up to date. No changes needed.`);
+      return;
+    }
   }
+  fs.writeFileSync(filePath, content);
+  console.log(`${path.basename(filePath)} ${exists ? "updated" : "created"} successfully!`);
+}
 
-  // Add footer
-  readmeContent.push(TEMPLATES.footer);
-
-  return readmeContent.join("\n\n");
+// Build per-category README content using existing generators, upgrading headings to H1
+function buildCategoryReadme(sectionBuilder, dirPath, headerLine, usageLine) {
+  const section = sectionBuilder(dirPath);
+  if (section && section.trim()) {
+    // Upgrade the first markdown heading level from ## to # for standalone README files
+    return section.replace(/^##\s/m, "# ");
+  }
+  // Fallback content when no entries are found
+  return `${headerLine}\n\n${usageLine}\n\n_No entries found yet._`;
 }
 
 // Main execution
 try {
-  console.log("Generating README.md from scratch...");
+  console.log("Generating category README files...");
 
-  const readmePath = path.join(__dirname, "README.md");
-  const newReadmeContent = generateReadme();
+  const instructionsDir = path.join(__dirname, "instructions");
+  const promptsDir = path.join(__dirname, "prompts");
+  const chatmodesDir = path.join(__dirname, "chatmodes");
 
-  // Check if the README file already exists
-  if (fs.existsSync(readmePath)) {
-    const originalContent = fs.readFileSync(readmePath, "utf8");
-    const hasChanges = originalContent !== newReadmeContent;
+  // Compose headers for standalone files by converting section headers to H1
+  const instructionsHeader = TEMPLATES.instructionsSection.replace(/^##\s/m, "# ");
+  const promptsHeader = TEMPLATES.promptsSection.replace(/^##\s/m, "# ");
+  const chatmodesHeader = TEMPLATES.chatmodesSection.replace(/^##\s/m, "# ");
 
-    if (hasChanges) {
-      fs.writeFileSync(readmePath, newReadmeContent);
-      console.log("README.md updated successfully!");
-    } else {
-      console.log("README.md is already up to date. No changes needed.");
-    }
-  } else {
-    // Create the README file if it doesn't exist
-    fs.writeFileSync(readmePath, newReadmeContent);
-    console.log("README.md created successfully!");
-  }
+  const instructionsReadme = buildCategoryReadme(
+    generateInstructionsSection,
+    instructionsDir,
+    instructionsHeader,
+    TEMPLATES.instructionsUsage
+  );
+  const promptsReadme = buildCategoryReadme(
+    generatePromptsSection,
+    promptsDir,
+    promptsHeader,
+    TEMPLATES.promptsUsage
+  );
+  const chatmodesReadme = buildCategoryReadme(
+    generateChatModesSection,
+    chatmodesDir,
+    chatmodesHeader,
+    TEMPLATES.chatmodesUsage
+  );
+
+  // Write outputs
+  writeFileIfChanged(path.join(__dirname, "README.instructions.md"), instructionsReadme);
+  writeFileIfChanged(path.join(__dirname, "README.prompts.md"), promptsReadme);
+  writeFileIfChanged(path.join(__dirname, "README.chatmodes.md"), chatmodesReadme);
 } catch (error) {
-  console.error(`Error generating README.md: ${error.message}`);
+  console.error(`Error generating category README files: ${error.message}`);
   process.exit(1);
 }
